@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { background:#f8f9fa; }
+    table tbody tr { cursor: pointer; }
+    .img-thumb { width:60px; height:60px; object-fit:cover; border-radius:6px; }
+    .sortable { cursor:pointer; }
+    .sortable::after { content:" ⇅"; font-size:0.8em; color:#888; }
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>📦 Product Dashboard</h3>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">+ Tạo sản phẩm</button>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <input id="searchInput" class="form-control" placeholder="Tìm theo title..." />
+    </div>
+    <div class="col-md-2">
+      <select id="pageSize" class="form-select">
+        <option value="5">5 / trang</option>
+        <option value="10" selected>10 / trang</option>
+        <option value="20">20 / trang</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button id="exportCsv" class="btn btn-outline-success">Export CSV (view hiện tại)</button>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-hover bg-white">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th class="sortable" onclick="sortBy('title')">Title</th>
+        <th class="sortable" onclick="sortBy('price')">Price</th>
+        <th>Category</th>
+        <th>Images</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <nav>
+    <ul id="pagination" class="pagination"></ul>
+  </nav>
+</div>
+
+<!-- Detail / Edit Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chi tiết sản phẩm</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="detailId" />
+        <div class="mb-2">
+          <label>Title</label>
+          <input id="detailTitle" class="form-control" />
+        </div>
+        <div class="mb-2">
+          <label>Price</label>
+          <input id="detailPrice" type="number" class="form-control" />
+        </div>
+        <div class="mb-2">
+          <label>Description</label>
+          <textarea id="detailDesc" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="updateProduct()">Save</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tạo sản phẩm</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input id="createTitle" class="form-control mb-2" placeholder="Title" />
+        <input id="createPrice" type="number" class="form-control mb-2" placeholder="Price" />
+        <textarea id="createDesc" class="form-control mb-2" placeholder="Description"></textarea>
+        <input id="createCategory" type="number" class="form-control mb-2" placeholder="Category ID (vd: 1)" />
+        <input id="createImage" class="form-control" placeholder="Image URL" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" onclick="createProduct()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
